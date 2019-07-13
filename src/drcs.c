@@ -66,6 +66,7 @@
 #   define S_IRWXO (S_IROTH | S_IWOTH | S_IXOTH)
 #endif
 
+#ifdef HAVE_PNG
 static char* get_arib_data_dir( arib_instance_t *p_instance )
 {
     const char *psz_arib_base_path = p_instance->p->psz_base_path;
@@ -82,6 +83,7 @@ static char* get_arib_data_dir( arib_instance_t *p_instance )
 
     return psz_arib_data_dir;
 }
+#endif
 
 static bool create_arib_basedir( arib_instance_t *p_instance )
 {
@@ -102,6 +104,7 @@ static bool create_arib_basedir( arib_instance_t *p_instance )
     return true;
 }
 
+#ifdef HAVE_PNG
 static bool create_arib_datadir( arib_instance_t *p_instance )
 {
     create_arib_basedir( p_instance );
@@ -124,6 +127,7 @@ static bool create_arib_datadir( arib_instance_t *p_instance )
     free( psz_arib_data_dir );
     return true;
 }
+#endif
 
 bool apply_drcs_conversion_table( arib_instance_t *p_instance )
 {
@@ -244,6 +248,7 @@ bool load_drcs_conversion_table( arib_instance_t *p_instance )
     return true;
 }
 
+#ifdef HAVE_PNG
 static FILE* open_image_file( arib_instance_t* p_instance, const char *psz_hash )
 {
     FILE* fp = NULL;
@@ -286,6 +291,7 @@ static FILE* open_image_file( arib_instance_t* p_instance, const char *psz_hash 
     free( psz_image_file );
     return fp;
 }
+#endif
 
 static char* get_drcs_pattern_data_hash(
         arib_instance_t *p_instance,

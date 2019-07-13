@@ -12,12 +12,16 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 LT_INIT
 
+AC_ARG_WITH([libpng], AS_HELP_STRING([--without-libpng], [Build without libpng]))
+
 # Checks for libraries.
 pkg_requires=""
-PKG_CHECK_MODULES(PNG, "libpng", [
-  AC_DEFINE(HAVE_PNG, 1, "have libpng")
-  pkg_requires="libpng"
-], [])
+AS_IF([test "x$with_libpng" = "xyes"], [
+  PKG_CHECK_MODULES(PNG, "libpng", [
+    AC_DEFINE(HAVE_PNG, 1, "have libpng")
+    pkg_requires="libpng"
+  ], [])
+])
 
 AC_SUBST([PKG_REQUIRES], [$(test x$enable_shared = xno && echo ${pkg_requires})])
 
