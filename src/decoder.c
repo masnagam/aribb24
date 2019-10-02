@@ -699,6 +699,7 @@ static int decoder_handle_c0( arib_decoder_t *decoder, int c )
         case 0x0a: //APD
             decoder->i_charbottom += decoder->i_charheight;
             decoder_adjust_position( decoder );
+            // It seems that LF is not used in actual contents in Japan.
             return 1;
         case 0x0b: //APU
             decoder->i_charbottom -= decoder->i_charheight;
@@ -713,7 +714,10 @@ static int decoder_handle_c0( arib_decoder_t *decoder, int c )
             decoder->i_charleft = decoder->i_left;
             decoder->i_charbottom += decoder->i_charheight;
             decoder_adjust_position( decoder );
-            return 1;
+            // Replace it with LF in order to break the line when rendering the
+            // text as a content of an HTML element having CSS property
+            // `white-space: pre-wrap`.
+            return decoder_push( decoder, 0x0a );
         case 0x0e: //LS1
             decoder->handle_gl = &decoder->handle_g1;
             return 1;
