@@ -1,0 +1,23 @@
+name: Linux
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends autoconf automake cmake g++-8 libtool make
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 80
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 80
+      - uses: actions/checkout@v1
+      - name: Build
+        run: |
+          ./bootstrap
+          ./configure --prefix=/usr/local --disable-shared --with-pic --without-libpng
+          make -j $(nproc)
+      - name: Install
+        run: |
+          sudo make install

@@ -1,0 +1,21 @@
+name: macOS
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      - name: Install deps
+        run: |
+          brew install \
+            autoconf automake libtool make pkg-config
+      - uses: actions/checkout@v1
+      - name: Build
+        run: |
+          ./bootstrap
+          ./configure --prefix=/usr/local --disable-shared --with-pic --without-libpng
+          make -j $(sysctl -n hw.ncpu)
+      - name: Install
+        run: |
+          sudo make install
